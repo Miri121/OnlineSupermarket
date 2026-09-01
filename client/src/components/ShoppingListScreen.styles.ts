@@ -37,7 +37,7 @@ export const styles = {
     pointerEvents: "none",
     transform: "scale(1)",
     opacity: 1,
-    transition: "all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+    transition: "all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
   },
   flyingItemAnimated: {
     position: "fixed",
@@ -45,6 +45,6 @@ export const styles = {
     pointerEvents: "none",
     transform: "scale(0.2)",
     opacity: 0,
-    transition: "all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+    transition: "all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
   },
 };

@@ -26,6 +26,9 @@ import { styles } from "./OrderSummaryScreen.styles";
 import {
   REQUIRED_FIELD,
   INVALID_EMAIL_FORMAT,
+  FULL_NAME,
+  ADDRESS,
+  EMAIL,
   EMPTY_CART,
   EMPTY_CART_MESSAGE,
   BACK_TO_SHOPPING,
@@ -232,7 +235,7 @@ function OrderSummaryScreen() {
         <form onSubmit={handleSubmit}>
           <TextField
             fullWidth
-            label=' Full Name *'
+            label={FULL_NAME}
             value={formData.fullName}
             onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
             error={!!errors.fullName}
@@ -241,7 +244,7 @@ function OrderSummaryScreen() {
           />
           <TextField
             fullWidth
-            label='Address *'
+            label={ADDRESS}
             value={formData.address}
             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
             error={!!errors.address}
@@ -252,7 +255,7 @@ function OrderSummaryScreen() {
           />
           <TextField
             fullWidth
-            label='Email *'
+            label={EMAIL}
             type='email'
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}

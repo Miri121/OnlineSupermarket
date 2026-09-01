@@ -2,6 +2,11 @@
 export const REQUIRED_FIELD = "שדה חובה";
 export const INVALID_EMAIL_FORMAT = "פורמט אימייל לא תקין";
 
+// Form field labels
+export const FULL_NAME = " Full Name *";
+export const ADDRESS = "Address *";
+export const EMAIL = "Email *";
+
 // Cart messages
 export const EMPTY_CART = "העגלה ריקה";
 export const EMPTY_CART_MESSAGE = "העגלה שלך ריקה. אנא הוסף פריטים לפני המשך לתשלום.";

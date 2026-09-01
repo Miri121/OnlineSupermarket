@@ -26,6 +26,7 @@ import {
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
+import StarIcon from "@mui/icons-material/Star";
 import { RootState, AppDispatch } from "../store/store";
 import { fetchCategories, fetchProductsByCategory } from "../store/productsSlice";
 import { addToCart, updateQuantity, removeFromCart } from "../store/cartSlice";
@@ -109,7 +110,7 @@ function ShoppingListScreen() {
       setTimeout(() => {
         setFlyingItem(null);
         setAnimateFlying(false);
-      }, 1100);
+      }, 1600);
 
       const existingItem = cartItems.find((item) => item.id === productId);
 
@@ -319,7 +320,13 @@ function ShoppingListScreen() {
             top: animateFlying ? flyingItem.endY : flyingItem.startY,
           }}
         >
-          <ShoppingCartIcon sx={{ fontSize: 40, color: "primary.main" }} />
+          <StarIcon
+            sx={{
+              fontSize: 40,
+              color: "#D4AF37",
+              filter: "drop-shadow(0 0 8px rgba(212, 175, 55, 0.8))",
+            }}
+          />
         </Box>
       )}
     </Box>
