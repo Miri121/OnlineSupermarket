@@ -23,6 +23,26 @@ import { nodeHttpClient } from "../api/axios";
 import { RootState, AppDispatch } from "../store/store";
 import { clearCart } from "../store/cartSlice";
 import { styles } from "./OrderSummaryScreen.styles";
+import {
+  REQUIRED_FIELD,
+  INVALID_EMAIL_FORMAT,
+  EMPTY_CART,
+  EMPTY_CART_MESSAGE,
+  BACK_TO_SHOPPING,
+  ORDER_SUBMISSION_FAILED,
+  ORDER_SENT_SUCCESSFULLY,
+  ORDER_THANK_YOU,
+  ORDER_SUMMARY,
+  ORDER_ITEMS,
+  CUSTOMER_DETAILS,
+  CONFIRM_ORDER,
+  SENDING,
+  PRODUCT,
+  CATEGORY,
+  PRICE,
+  QUANTITY,
+  TOTAL,
+} from "../Common/CommonConstants";
 
 function OrderSummaryScreen() {
   const navigate = useNavigate();
@@ -43,17 +63,17 @@ function OrderSummaryScreen() {
     const newErrors: { [key: string]: string } = {};
 
     if (!formData.fullName.trim()) {
-      newErrors.fullName = "שדה חובה";
+      newErrors.fullName = REQUIRED_FIELD;
     }
 
     if (!formData.address.trim()) {
-      newErrors.address = "שדה חובה";
+      newErrors.address = REQUIRED_FIELD;
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "שדה חובה";
+      newErrors.email = REQUIRED_FIELD;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "פורמט אימייל לא תקין";
+      newErrors.email = INVALID_EMAIL_FORMAT;
     }
 
     setErrors(newErrors);
@@ -68,7 +88,7 @@ function OrderSummaryScreen() {
     }
 
     if (cartItems.length === 0) {
-      setErrorMessage("העגלה ריקה");
+      setErrorMessage(EMPTY_CART);
       return;
     }
 
@@ -100,7 +120,7 @@ function OrderSummaryScreen() {
         navigate("/");
       }, 3000);
     } catch (error) {
-      setErrorMessage("שליחת ההזמנה נכשלה. אנא נסה שוב.");
+      setErrorMessage(ORDER_SUBMISSION_FAILED);
       console.error("Order submission error:", error);
     } finally {
       setSubmitting(false);
@@ -115,7 +135,7 @@ function OrderSummaryScreen() {
     return (
       <Box>
         <Alert severity='warning' sx={styles.emptyCartAlert}>
-          העגלה שלך ריקה. אנא הוסף פריטים לפני המשך לתשלום.
+          {EMPTY_CART_MESSAGE}
         </Alert>
         <Button
           variant='contained'
@@ -123,7 +143,7 @@ function OrderSummaryScreen() {
           onClick={() => navigate("/")}
           sx={styles.backButton}
         >
-          חזרה לקניות
+          {BACK_TO_SHOPPING}
         </Button>
       </Box>
     );
@@ -134,10 +154,10 @@ function OrderSummaryScreen() {
       <Box sx={styles.successBox}>
         <CheckCircleIcon color='success' sx={styles.successIcon} />
         <Typography variant='h4' gutterBottom>
-          ההזמנה נשלחה בהצלחה!
+          {ORDER_SENT_SUCCESSFULLY}
         </Typography>
         <Typography variant='body1' color='text.secondary' gutterBottom>
-          תודה על ההזמנה. תועבר לדף הקניות...
+          {ORDER_THANK_YOU}
         </Typography>
       </Box>
     );
@@ -146,7 +166,7 @@ function OrderSummaryScreen() {
   return (
     <Box>
       <Typography variant='h4' gutterBottom>
-        סיכום הזמנה
+        {ORDER_SUMMARY}
       </Typography>
 
       <Button
@@ -155,7 +175,7 @@ function OrderSummaryScreen() {
         onClick={() => navigate("/")}
         sx={styles.backButtonWithMargin}
       >
-        חזרה לקניות
+        {BACK_TO_SHOPPING}
       </Button>
 
       {errorMessage && (
@@ -167,17 +187,17 @@ function OrderSummaryScreen() {
       {/* Order Items */}
       <Paper elevation={2} sx={styles.orderItemsPaper}>
         <Typography variant='h5' gutterBottom>
-          פריטי הזמנה
+          {ORDER_ITEMS}
         </Typography>
         <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>מוצר</TableCell>
-                <TableCell>קטגוריה</TableCell>
-                <TableCell align='right'>מחיר</TableCell>
-                <TableCell align='right'>כמות</TableCell>
-                <TableCell align='right'>סה"כ</TableCell>
+                <TableCell>{PRODUCT}</TableCell>
+                <TableCell>{CATEGORY}</TableCell>
+                <TableCell align='right'>{PRICE}</TableCell>
+                <TableCell align='right'>{QUANTITY}</TableCell>
+                <TableCell align='right'>{TOTAL}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -192,7 +212,7 @@ function OrderSummaryScreen() {
               ))}
               <TableRow>
                 <TableCell colSpan={4} align='right'>
-                  <Typography variant='h6'>סה"כ:</Typography>
+                  <Typography variant='h6'>{TOTAL}:</Typography>
                 </TableCell>
                 <TableCell align='right'>
                   <Typography variant='h6'>₪{getTotalPrice()}</Typography>
@@ -206,7 +226,7 @@ function OrderSummaryScreen() {
       {/* Customer Information Form */}
       <Paper elevation={2} sx={styles.customerInfoPaper}>
         <Typography variant='h5' gutterBottom>
-          פרטי לקוח
+          {CUSTOMER_DETAILS}
         </Typography>
         <Divider sx={styles.divider} />
         <form onSubmit={handleSubmit}>
@@ -250,7 +270,7 @@ function OrderSummaryScreen() {
             startIcon={submitting ? <CircularProgress size={20} /> : <CheckCircleIcon />}
             sx={styles.submitButton}
           >
-            {submitting ? "שולח..." : "אישור הזמנה"}
+            {submitting ? SENDING : CONFIRM_ORDER}
           </Button>
         </form>
       </Paper>

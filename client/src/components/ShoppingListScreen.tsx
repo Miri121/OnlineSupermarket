@@ -30,6 +30,19 @@ import { RootState, AppDispatch } from "../store/store";
 import { fetchCategories, fetchProductsByCategory } from "../store/productsSlice";
 import { addToCart, updateQuantity, removeFromCart } from "../store/cartSlice";
 import { styles } from "./ShoppingListScreen.styles";
+import {
+  SHOPPING_LIST,
+  CATEGORIES,
+  PRODUCTS,
+  QUANTITY,
+  ADD_TO_CART,
+  SHOPPING_CART,
+  REMOVE_PRODUCT,
+  TOTAL,
+  CLOSE,
+  CONTINUE_TO_ORDER,
+  ITEMS,
+} from "../Common/CommonConstants";
 
 function ShoppingListScreen() {
   const dispatch = useDispatch<AppDispatch>();
@@ -135,7 +148,7 @@ function ShoppingListScreen() {
   return (
     <Box>
       <Typography variant='h4' gutterBottom sx={styles.mainTitle}>
-        רשימת קניות
+        {SHOPPING_LIST}
       </Typography>
 
       {error && (
@@ -147,7 +160,7 @@ function ShoppingListScreen() {
       {/* Categories Section */}
       <Paper elevation={2} sx={styles.categoriesPaper}>
         <Typography variant='h5' gutterBottom sx={styles.sectionTitle}>
-          קטגוריות
+          {CATEGORIES}
         </Typography>
         {loading && !categories.length ? (
           <CircularProgress />
@@ -171,7 +184,7 @@ function ShoppingListScreen() {
       {selectedCategory && (
         <Paper elevation={2} sx={styles.productsPaper}>
           <Typography variant='h5' gutterBottom sx={styles.sectionTitle}>
-            מוצרים
+            {PRODUCTS}
           </Typography>
           {loading ? (
             <CircularProgress />
@@ -193,7 +206,7 @@ function ShoppingListScreen() {
                       <Box sx={styles.productBox}>
                         <TextField
                           type='number'
-                          label='כמות'
+                          label={QUANTITY}
                           size='small'
                           value={quantities[product.id] || ""}
                           onChange={(e) => handleQuantityChange(product.id, e.target.value)}
@@ -206,7 +219,7 @@ function ShoppingListScreen() {
                           disabled={!quantities[product.id] || quantities[product.id] <= 0}
                           fullWidth
                         >
-                          הוסף מוצר לסל
+                          {ADD_TO_CART}
                         </Button>
                       </Box>
                     </CardContent>
@@ -219,7 +232,7 @@ function ShoppingListScreen() {
       )}
 
       {/* Floating Cart Button */}
-      <Tooltip title='עגלת קניות' arrow>
+      <Tooltip title={SHOPPING_CART} arrow>
         <Fab
           color='primary'
           aria-label='cart'
@@ -242,7 +255,7 @@ function ShoppingListScreen() {
       >
         <DialogTitle sx={styles.cartModalTitle}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <Typography variant='h6'>עגלת קניות</Typography>
+            <Typography variant='h6'>{SHOPPING_CART}</Typography>
             <IconButton
               edge='end'
               color='inherit'
@@ -259,14 +272,15 @@ function ShoppingListScreen() {
             <Box key={item.id} sx={{ mb: 2 }}>
               <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <Typography>
-                  {item.name} - כמות: {item.quantity} - ₪{(item.price * item.quantity).toFixed(2)}
+                  {item.name} - {QUANTITY}: {item.quantity} - ₪
+                  {(item.price * item.quantity).toFixed(2)}
                 </Typography>
-                <Tooltip title='הסר מוצר' arrow>
+                <Tooltip title={REMOVE_PRODUCT} arrow>
                   <IconButton
                     size='small'
                     color='error'
                     onClick={() => handleRemoveFromCart(item.id)}
-                    aria-label='הסר מוצר'
+                    aria-label={REMOVE_PRODUCT}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -276,11 +290,11 @@ function ShoppingListScreen() {
           ))}
           <Divider sx={{ my: 2 }} />
           <Typography variant='h6'>
-            סה"כ: {getTotalItems()} פריטים - ₪{getTotalPrice()}
+            {TOTAL}: {getTotalItems()} {ITEMS} - ₪{getTotalPrice()}
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setCartModalOpen(false)}>סגור</Button>
+          <Button onClick={() => setCartModalOpen(false)}>{CLOSE}</Button>
           <Button
             variant='contained'
             color='primary'
@@ -291,7 +305,7 @@ function ShoppingListScreen() {
               navigate("/order-summary");
             }}
           >
-            המשך להזמנה
+            {CONTINUE_TO_ORDER}
           </Button>
         </DialogActions>
       </Dialog>
