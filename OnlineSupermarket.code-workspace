@@ -1,0 +1,27 @@
+{
+  "folders": [
+    {
+      "path": ".",
+    },
+  ],
+  "settings": {
+    "restoreTerminals.terminals": [
+      {
+        "splitTerminals": [
+          {
+            "name": "dotnet-server",
+            "commands": ["powershell.exe -NoExit -Command \"cd dotnet-server; dotnet run\""],
+          },
+          {
+            "name": "node-server",
+            "commands": ["cd node-server", "timeout /t 5", "npm run dev"],
+          },
+          {
+            "name": "client",
+            "commands": ["cd client", "timeout /t 5", "npm run dev"],
+          },
+        ],
+      },
+    ],
+  },
+}

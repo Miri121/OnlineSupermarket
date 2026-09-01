@@ -1,0 +1,50 @@
+export const styles = {
+  mainTitle: {
+    color: "#1A237E",
+    fontWeight: 600,
+    textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
+  },
+  errorAlert: { mb: 2 },
+  sectionTitle: {
+    color: "#1A237E",
+    fontWeight: 600,
+  },
+  categoriesPaper: { p: 3, mb: 3 },
+  categoriesBox: { display: "flex", flexWrap: "wrap", gap: 1 },
+  categoryChip: { fontSize: "1rem", py: 2.5 },
+  productsPaper: { p: 3, mb: 3 },
+  productBox: { display: "flex", gap: 1, alignItems: "center", mt: 2 },
+  quantityField: { width: "100px" },
+  cartSummaryPaper: { p: 3, bgcolor: "#f5f5f5" },
+  cartDivider: { mb: 2 },
+  cartItemBox: { mb: 1 },
+  cartTotalDivider: { my: 2 },
+  cartTotalBox: { display: "flex", justifyContent: "space-between", alignItems: "center" },
+  cartModal: {
+    "& .MuiDialog-paper": {
+      direction: "rtl",
+    },
+  },
+  cartModalTitle: {
+    textAlign: "right",
+  },
+  cartModalContent: {
+    textAlign: "right",
+  },
+  flyingItemInitial: {
+    position: "fixed",
+    zIndex: 9999,
+    pointerEvents: "none",
+    transform: "scale(1)",
+    opacity: 1,
+    transition: "all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+  },
+  flyingItemAnimated: {
+    position: "fixed",
+    zIndex: 9999,
+    pointerEvents: "none",
+    transform: "scale(0.2)",
+    opacity: 0,
+    transition: "all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+  },
+};
