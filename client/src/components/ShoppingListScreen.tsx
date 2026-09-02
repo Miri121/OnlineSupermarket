@@ -26,7 +26,7 @@ import {
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
-import StarIcon from "@mui/icons-material/Star";
+import AddIcon from "@mui/icons-material/Add";
 import { RootState, AppDispatch } from "../store/store";
 import { fetchCategories, fetchProductsByCategory } from "../store/productsSlice";
 import { addToCart, updateQuantity, removeFromCart } from "../store/cartSlice";
@@ -54,7 +54,7 @@ function ShoppingListScreen() {
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
+  const [inputQuantities, setInputQuantities] = useState<{ [key: number]: number }>({});
   const [cartModalOpen, setCartModalOpen] = useState(false);
   const [flyingItem, setFlyingItem] = useState<{
     id: number;
@@ -72,19 +72,19 @@ function ShoppingListScreen() {
   const handleCategorySelect = (categoryId: number) => {
     setSelectedCategory(categoryId);
     dispatch(fetchProductsByCategory(categoryId));
-    setQuantities({});
+    setInputQuantities({});
   };
 
   const handleQuantityChange = (productId: number, value: string) => {
     const quantity = parseInt(value) || 0;
-    setQuantities((prev) => ({ ...prev, [productId]: quantity }));
+    setInputQuantities((prev) => ({ ...prev, [productId]: quantity }));
   };
 
   const handleAddToCart = (productId: number, event: React.MouseEvent<HTMLButtonElement>) => {
     const product = products.find((p) => p.id === productId);
-    const quantity = quantities[productId] || 1;
+    const inputQty = inputQuantities[productId] || 1;
 
-    if (product && quantity > 0) {
+    if (product && inputQty > 0) {
       // Get button position for animation start
       const buttonRect = event.currentTarget.getBoundingClientRect();
       const startX = buttonRect.left + buttonRect.width / 2;
@@ -112,30 +112,26 @@ function ShoppingListScreen() {
         setAnimateFlying(false);
       }, 1600);
 
-      const existingItem = cartItems.find((item) => item.id === productId);
+      // Add to cart (handles both new items and incrementing existing items)
+      const category = categories.find((c) => c.id === product.categoryId);
+      dispatch(
+        addToCart({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          quantity: inputQty,
+          categoryName: category?.name || "",
+        }),
+      );
 
-      if (existingItem) {
-        // Update existing item quantity
-        dispatch(updateQuantity({ id: productId, quantity }));
-      } else {
-        // Add new item to cart
-        const category = categories.find((c) => c.id === product.categoryId);
-        dispatch(
-          addToCart({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            quantity,
-            categoryName: category?.name || "",
-          }),
-        );
-      }
+      // Input field stays the same - don't update it
+      // The cart quantity will increase, but the input remains unchanged
     }
   };
 
   const handleRemoveFromCart = (productId: number) => {
     dispatch(removeFromCart(productId));
-    setQuantities((prev) => ({ ...prev, [productId]: 0 }));
+    setInputQuantities((prev) => ({ ...prev, [productId]: 0 }));
   };
 
   const getTotalItems = () => {
@@ -209,7 +205,7 @@ function ShoppingListScreen() {
                           type='number'
                           label={QUANTITY}
                           size='small'
-                          value={quantities[product.id] || ""}
+                          value={inputQuantities[product.id] || ""}
                           onChange={(e) => handleQuantityChange(product.id, e.target.value)}
                           inputProps={{ min: 1 }}
                           sx={styles.quantityField}
@@ -217,7 +213,9 @@ function ShoppingListScreen() {
                         <Button
                           variant='contained'
                           onClick={(e) => handleAddToCart(product.id, e)}
-                          disabled={!quantities[product.id] || quantities[product.id] <= 0}
+                          disabled={
+                            !inputQuantities[product.id] || inputQuantities[product.id] <= 0
+                          }
                           fullWidth
                         >
                           {ADD_TO_CART}
@@ -320,11 +318,12 @@ function ShoppingListScreen() {
             top: animateFlying ? flyingItem.endY : flyingItem.startY,
           }}
         >
-          <StarIcon
+          <AddIcon
             sx={{
-              fontSize: 40,
-              color: "#D4AF37",
-              filter: "drop-shadow(0 0 8px rgba(212, 175, 55, 0.8))",
+              fontSize: 56,
+              color: "#C0C0C0",
+              filter:
+                "drop-shadow(0 0 10px rgba(192, 192, 192, 0.9)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.6))",
             }}
           />
         </Box>
