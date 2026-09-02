@@ -1,52 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  TextField,
-  Box,
-  Alert,
-  CircularProgress,
-  Chip,
-  Divider,
-  Paper,
-  IconButton,
-  Tooltip,
-  Badge,
-  Fab,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import DeleteIcon from "@mui/icons-material/Delete";
-import CloseIcon from "@mui/icons-material/Close";
-import AddIcon from "@mui/icons-material/Add";
+import { Box, Typography, Alert } from "@mui/material";
 import { RootState, AppDispatch } from "../store/store";
 import { fetchCategories, fetchProductsByCategory } from "../store/productsSlice";
 import { addToCart, removeFromCart } from "../store/cartSlice";
 import { styles } from "./ShoppingListScreen.styles.ts";
-import {
-  SHOPPING_LIST,
-  CATEGORIES,
-  PRODUCTS,
-  QUANTITY,
-  ADD_TO_CART,
-  SHOPPING_CART,
-  REMOVE_PRODUCT,
-  TOTAL,
-  CLOSE,
-  CONTINUE_TO_ORDER,
-  ITEMS,
-  CONFIRM_DELETE_PRODUCT,
-  YES,
-  NO,
-} from "../Common/CommonConstants";
+import { SHOPPING_LIST } from "../Common/CommonConstants";
+import { CategoriesSection } from "../Pages/ShoppingList/CategoriesSection";
+import { ProductsSection } from "../Pages/ShoppingList/ProductsSection";
+import { CartModal } from "../Pages/ShoppingList/CartModal";
+import { DeleteConfirmDialog } from "../Pages/ShoppingList/DeleteConfirmDialog";
+import { FloatingCartButton } from "../Pages/ShoppingList/FloatingCartButton";
+import { FlyingAnimation } from "../Pages/ShoppingList/FlyingAnimation";
 
 function ShoppingListScreen() {
   const dispatch = useDispatch<AppDispatch>();
@@ -163,291 +129,72 @@ function ShoppingListScreen() {
 
   return (
     <Box>
-      <Typography variant='h4' gutterBottom sx={styles.mainTitle}>
+      <Typography variant="h4" gutterBottom sx={styles.mainTitle}>
         {SHOPPING_LIST}
       </Typography>
 
       {error && (
-        <Alert severity='error' sx={styles.errorAlert}>
+        <Alert severity="error" sx={styles.errorAlert}>
           {error}
         </Alert>
       )}
 
       {/* Categories Section */}
-      <Paper elevation={2} sx={styles.categoriesPaper}>
-        <Typography variant='h5' gutterBottom sx={styles.sectionTitle}>
-          {CATEGORIES}
-        </Typography>
-        {loading && !categories.length ? (
-          <CircularProgress />
-        ) : (
-          <Box sx={styles.categoriesBox}>
-            {categories.map((category) => (
-              <Chip
-                key={category.id}
-                label={category.name}
-                onClick={() => handleCategorySelect(category.id)}
-                variant={selectedCategory === category.id ? "filled" : "outlined"}
-                sx={{
-                  ...styles.categoryChip,
-                  ...(selectedCategory === category.id && {
-                    backgroundColor: "#667eea",
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: "#5568d3",
-                    },
-                  }),
-                  ...(selectedCategory !== category.id && {
-                    borderColor: "#667eea",
-                    color: "#667eea",
-                    "&:hover": {
-                      borderColor: "#764ba2",
-                      backgroundColor: "rgba(102, 126, 234, 0.08)",
-                    },
-                  }),
-                }}
-              />
-            ))}
-          </Box>
-        )}
-      </Paper>
+      <CategoriesSection
+        categories={categories}
+        loading={loading}
+        selectedCategory={selectedCategory}
+        onCategorySelect={handleCategorySelect}
+        styles={styles}
+      />
 
       {/* Products Section */}
       {selectedCategory && (
-        <Paper elevation={2} sx={styles.productsPaper}>
-          <Typography variant='h5' gutterBottom sx={styles.sectionTitle}>
-            {PRODUCTS}
-          </Typography>
-          {loading ? (
-            <CircularProgress />
-          ) : (
-            <Grid container spacing={3}>
-              {products.map((product) => (
-                <Grid item xs={12} sm={6} md={4} key={product.id}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant='h6' gutterBottom>
-                        {product.name}
-                      </Typography>
-                      <Typography color='text.secondary' gutterBottom>
-                        {product.description}
-                      </Typography>
-                      <Typography
-                        variant='h6'
-                        gutterBottom
-                        sx={{
-                          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                          backgroundClip: "text",
-                          fontWeight: 600,
-                        }}
-                      >
-                        ₪{product.price.toFixed(2)}
-                      </Typography>
-                      <Box sx={styles.productBox}>
-                        <TextField
-                          type='number'
-                          label={QUANTITY}
-                          size='small'
-                          value={inputQuantities[product.id] || ""}
-                          onChange={(e) => handleQuantityChange(product.id, e.target.value)}
-                          inputProps={{ min: 1 }}
-                          sx={styles.quantityField}
-                        />
-                        <Button
-                          variant='contained'
-                          onClick={(e) => handleAddToCart(product.id, e)}
-                          disabled={
-                            !inputQuantities[product.id] || inputQuantities[product.id] <= 0
-                          }
-                          fullWidth
-                          sx={{
-                            backgroundColor: "#667eea",
-                            color: "white",
-                            "&:hover": {
-                              backgroundColor: "#5568d3",
-                            },
-                          }}
-                        >
-                          {ADD_TO_CART}
-                        </Button>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          )}
-        </Paper>
+        <ProductsSection
+          products={products}
+          loading={loading}
+          inputQuantities={inputQuantities}
+          onQuantityChange={handleQuantityChange}
+          onAddToCart={handleAddToCart}
+          styles={styles}
+        />
       )}
 
       {/* Floating Cart Button */}
-      <Tooltip title={SHOPPING_CART} arrow>
-        <Fab
-          aria-label='cart'
-          sx={{
-            position: "fixed",
-            top: 16,
-            left: 16,
-            backgroundColor: "#8a5ec4",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "#764ba2",
-            },
-          }}
-          onClick={() => setCartModalOpen(true)}
-        >
-          <Badge badgeContent={getTotalItems()} color='error'>
-            <ShoppingCartIcon />
-          </Badge>
-        </Fab>
-      </Tooltip>
+      <FloatingCartButton totalItems={getTotalItems()} onClick={() => setCartModalOpen(true)} />
 
       {/* Cart Modal */}
-      <Dialog
+      <CartModal
         open={cartModalOpen}
+        cartItems={cartItems}
         onClose={() => setCartModalOpen(false)}
-        maxWidth='sm'
-        fullWidth
-        sx={styles.cartModal}
-      >
-        <DialogTitle sx={styles.cartModalTitle}>
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <Typography variant='h6'>{SHOPPING_CART}</Typography>
-            <IconButton
-              edge='end'
-              color='inherit'
-              onClick={() => setCartModalOpen(false)}
-              aria-label='close'
-            >
-              <CloseIcon />
-            </IconButton>
-          </Box>
-        </DialogTitle>
-        <DialogContent sx={styles.cartModalContent}>
-          <Divider sx={{ mb: 2 }} />
-          {cartItems.map((item) => (
-            <Box key={item.id} sx={{ mb: 2 }}>
-              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <Typography>
-                  {item.name} - {QUANTITY}: {item.quantity} - ₪
-                  {(item.price * item.quantity).toFixed(2)}
-                </Typography>
-                <Tooltip title={REMOVE_PRODUCT} arrow>
-                  <IconButton
-                    size='small'
-                    color='error'
-                    onClick={() => handleRemoveFromCart(item.id)}
-                    aria-label={REMOVE_PRODUCT}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </Box>
-          ))}
-          <Divider sx={{ my: 2 }} />
-          <Typography variant='h6'>
-            {TOTAL}: {getTotalItems()} {ITEMS} - ₪{getTotalPrice()}
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setCartModalOpen(false)}>{CLOSE}</Button>
-          <Button
-            variant='contained'
-            startIcon={<ShoppingCartIcon />}
-            disabled={cartItems.length === 0}
-            onClick={() => {
-              setCartModalOpen(false);
-              navigate("/order-summary");
-            }}
-            sx={{
-              backgroundColor: "#667eea",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#5568d3",
-              },
-            }}
-          >
-            {CONTINUE_TO_ORDER}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onRemoveFromCart={handleRemoveFromCart}
+        onContinueToOrder={() => {
+          setCartModalOpen(false);
+          navigate("/order-summary");
+        }}
+        getTotalItems={getTotalItems}
+        getTotalPrice={getTotalPrice}
+        styles={styles}
+      />
 
       {/* Delete Confirmation Dialog */}
-      <Dialog
+      <DeleteConfirmDialog
         open={deleteConfirmOpen}
-        onClose={cancelRemoveFromCart}
-        maxWidth='xs'
-        fullWidth
-        sx={{
-          "& .MuiDialog-paper": {
-            direction: "rtl",
-          },
-        }}
-      >
-        <DialogTitle
-          sx={{
-            textAlign: "center",
-            fontWeight: 600,
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}
-        >
-          {CONFIRM_DELETE_PRODUCT}
-        </DialogTitle>
-        <DialogActions sx={{ justifyContent: "center", pb: 3, gap: 2 }}>
-          <Button
-            onClick={cancelRemoveFromCart}
-            variant='outlined'
-            sx={{
-              borderColor: "#667eea",
-              color: "#667eea",
-              "&:hover": {
-                borderColor: "#5568d3",
-                backgroundColor: "rgba(102, 126, 234, 0.08)",
-              },
-            }}
-          >
-            {NO}
-          </Button>
-          <Button
-            onClick={confirmRemoveFromCart}
-            variant='contained'
-            sx={{
-              backgroundColor: "#667eea",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#5568d3",
-              },
-            }}
-          >
-            {YES}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onConfirm={confirmRemoveFromCart}
+        onCancel={cancelRemoveFromCart}
+      />
 
       {/* Flying Animation */}
       {flyingItem && (
-        <Box
-          sx={{
-            ...(animateFlying ? styles.flyingItemAnimated : styles.flyingItemInitial),
-            left: animateFlying ? flyingItem.endX : flyingItem.startX,
-            top: animateFlying ? flyingItem.endY : flyingItem.startY,
-          }}
-        >
-          <AddIcon
-            sx={{
-              fontSize: 56,
-              color: "#C0C0C0",
-              filter:
-                "drop-shadow(0 0 10px rgba(192, 192, 192, 0.9)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.6))",
-            }}
-          />
-        </Box>
+        <FlyingAnimation
+          startX={flyingItem.startX}
+          startY={flyingItem.startY}
+          endX={flyingItem.endX}
+          endY={flyingItem.endY}
+          isAnimating={animateFlying}
+          styles={styles}
+        />
       )}
     </Box>
   );
