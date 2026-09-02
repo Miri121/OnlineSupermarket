@@ -11,7 +11,7 @@
           {
             "name": "dotnet-server",
             "commands": [
-              "powershell.exe -NoExit -Command \"cd dotnet-server; if (!(Test-Path 'obj\\project.assets.json')) { dotnet restore }; dotnet run\""
+              "powershell.exe -NoExit -Command \"cd dotnet-server; if (-not (Test-Path 'obj\\project.assets.json')) { dotnet restore }; dotnet run\"",
             ],
           },
           {
@@ -20,7 +20,7 @@
               "cd node-server",
               "timeout /t 5",
               "if not exist node_modules (npm install)",
-              "npm run dev"
+              "npm run dev",
             ],
           },
           {
@@ -29,7 +29,7 @@
               "cd client",
               "timeout /t 5",
               "if not exist node_modules (npm install)",
-              "npm run dev"
+              "npm run dev",
             ],
           },
         ],
