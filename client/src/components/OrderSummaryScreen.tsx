@@ -149,7 +149,14 @@ function OrderSummaryScreen() {
           variant='contained'
           startIcon={<ArrowForwardIcon />}
           onClick={() => navigate("/")}
-          sx={styles.backButton}
+          sx={{
+            ...styles.backButton,
+            backgroundColor: "#667eea",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "#5568d3",
+            },
+          }}
         >
           {BACK_TO_SHOPPING}
         </Button>
@@ -317,12 +324,18 @@ function OrderSummaryScreen() {
           <Button
             type='submit'
             variant='contained'
-            color='primary'
             size='large'
             fullWidth
             disabled={submitting}
             startIcon={submitting ? <CircularProgress size={20} /> : <CheckCircleIcon />}
-            sx={styles.submitButton}
+            sx={{
+              ...styles.submitButton,
+              backgroundColor: "#667eea",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#5568d3",
+              },
+            }}
           >
             {submitting ? SENDING : CONFIRM_ORDER}
           </Button>

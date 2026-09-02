@@ -12,10 +12,13 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div dir='rtl'>
-        <AppBar position='static'>
+        <AppBar
+          position='static'
+          sx={{ background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}
+        >
           <Toolbar>
             <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-             סופרמרקט אונליין
+              סופרמרקט אונליין
             </Typography>
           </Toolbar>
         </AppBar>

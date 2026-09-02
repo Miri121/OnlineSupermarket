@@ -1,12 +1,18 @@
 export const styles = {
   mainTitle: {
-    color: "#1A237E",
+    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
     fontWeight: 600,
     textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
   },
   errorAlert: { mb: 2 },
   sectionTitle: {
-    color: "#1A237E",
+    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
     fontWeight: 600,
   },
   categoriesPaper: { p: 3, mb: 3 },

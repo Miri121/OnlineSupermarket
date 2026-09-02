@@ -168,9 +168,25 @@ function ShoppingListScreen() {
                 key={category.id}
                 label={category.name}
                 onClick={() => handleCategorySelect(category.id)}
-                color={selectedCategory === category.id ? "primary" : "default"}
                 variant={selectedCategory === category.id ? "filled" : "outlined"}
-                sx={styles.categoryChip}
+                sx={{
+                  ...styles.categoryChip,
+                  ...(selectedCategory === category.id && {
+                    backgroundColor: "#667eea",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "#5568d3",
+                    },
+                  }),
+                  ...(selectedCategory !== category.id && {
+                    borderColor: "#667eea",
+                    color: "#667eea",
+                    "&:hover": {
+                      borderColor: "#764ba2",
+                      backgroundColor: "rgba(102, 126, 234, 0.08)",
+                    },
+                  }),
+                }}
               />
             ))}
           </Box>
@@ -197,7 +213,17 @@ function ShoppingListScreen() {
                       <Typography color='text.secondary' gutterBottom>
                         {product.description}
                       </Typography>
-                      <Typography variant='h6' color='primary' gutterBottom>
+                      <Typography
+                        variant='h6'
+                        gutterBottom
+                        sx={{
+                          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                          backgroundClip: "text",
+                          fontWeight: 600,
+                        }}
+                      >
                         ₪{product.price.toFixed(2)}
                       </Typography>
                       <Box sx={styles.productBox}>
@@ -217,6 +243,13 @@ function ShoppingListScreen() {
                             !inputQuantities[product.id] || inputQuantities[product.id] <= 0
                           }
                           fullWidth
+                          sx={{
+                            backgroundColor: "#667eea",
+                            color: "white",
+                            "&:hover": {
+                              backgroundColor: "#5568d3",
+                            },
+                          }}
                         >
                           {ADD_TO_CART}
                         </Button>
@@ -233,9 +266,17 @@ function ShoppingListScreen() {
       {/* Floating Cart Button */}
       <Tooltip title={SHOPPING_CART} arrow>
         <Fab
-          color='primary'
           aria-label='cart'
-          sx={{ position: "fixed", top: 16, left: 16 }}
+          sx={{
+            position: "fixed",
+            top: 16,
+            left: 16,
+            backgroundColor: "#8a5ec4",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "#764ba2",
+            },
+          }}
           onClick={() => setCartModalOpen(true)}
         >
           <Badge badgeContent={getTotalItems()} color='error'>
@@ -296,12 +337,18 @@ function ShoppingListScreen() {
           <Button onClick={() => setCartModalOpen(false)}>{CLOSE}</Button>
           <Button
             variant='contained'
-            color='primary'
             startIcon={<ShoppingCartIcon />}
             disabled={cartItems.length === 0}
             onClick={() => {
               setCartModalOpen(false);
               navigate("/order-summary");
+            }}
+            sx={{
+              backgroundColor: "#667eea",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#5568d3",
+              },
             }}
           >
             {CONTINUE_TO_ORDER}
