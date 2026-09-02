@@ -16,9 +16,14 @@ import {
   Alert,
   CircularProgress,
   Divider,
+  Fade,
+  Zoom,
+  Slide,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import StarIcon from "@mui/icons-material/Star";
 import { nodeHttpClient } from "../api/axios";
 import { RootState, AppDispatch } from "../store/store";
 import { clearCart } from "../store/cartSlice";
@@ -121,7 +126,7 @@ function OrderSummaryScreen() {
 
       setTimeout(() => {
         navigate("/");
-      }, 3000);
+      }, 6000);
     } catch (error) {
       setErrorMessage(ORDER_SUBMISSION_FAILED);
       console.error("Order submission error:", error);
@@ -154,14 +159,60 @@ function OrderSummaryScreen() {
 
   if (success) {
     return (
-      <Box sx={styles.successBox}>
-        <CheckCircleIcon color='success' sx={styles.successIcon} />
-        <Typography variant='h4' gutterBottom>
-          {ORDER_SENT_SUCCESSFULLY}
-        </Typography>
-        <Typography variant='body1' color='text.secondary' gutterBottom>
-          {ORDER_THANK_YOU}
-        </Typography>
+      <Box sx={styles.luxurySuccessContainer}>
+        <Fade in={true} timeout={800}>
+          <Paper elevation={0} sx={styles.luxurySuccessPaper}>
+            {/* Decorative Stars */}
+            <Box sx={styles.starsContainer}>
+              <Zoom in={true} timeout={600} style={{ transitionDelay: "200ms" }}>
+                <StarIcon sx={styles.star1} />
+              </Zoom>
+              <Zoom in={true} timeout={600} style={{ transitionDelay: "300ms" }}>
+                <StarIcon sx={styles.star2} />
+              </Zoom>
+              <Zoom in={true} timeout={600} style={{ transitionDelay: "400ms" }}>
+                <StarIcon sx={styles.star3} />
+              </Zoom>
+            </Box>
+
+            {/* Success Icon with Animation */}
+            <Zoom in={true} timeout={1000}>
+              <Box sx={styles.iconWrapper}>
+                <CheckCircleIcon sx={styles.luxurySuccessIcon} />
+              </Box>
+            </Zoom>
+
+            {/* Main Success Message */}
+            <Slide direction='up' in={true} timeout={800}>
+              <Box>
+                <Typography variant='h3' sx={styles.luxuryTitle}>
+                  {ORDER_SENT_SUCCESSFULLY}
+                </Typography>
+                <Box sx={styles.decorativeLine} />
+              </Box>
+            </Slide>
+
+            {/* Thank You Message */}
+            <Fade in={true} timeout={1000} style={{ transitionDelay: "400ms" }}>
+              <Typography variant='h6' sx={styles.luxurySubtitle}>
+                {ORDER_THANK_YOU}
+              </Typography>
+            </Fade>
+
+            {/* Shipping Icon */}
+            <Fade in={true} timeout={1000} style={{ transitionDelay: "600ms" }}>
+              <Box sx={styles.shippingIconContainer}>
+                <LocalShippingIcon sx={styles.shippingIcon} />
+                <Typography variant='body2' sx={styles.shippingText}>
+                  ההזמנה שלך בדרך אליך
+                </Typography>
+              </Box>
+            </Fade>
+
+            {/* Decorative Border */}
+            <Box sx={styles.decorativeBorder} />
+          </Paper>
+        </Fade>
       </Box>
     );
   }

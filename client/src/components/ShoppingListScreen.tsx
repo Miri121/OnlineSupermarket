@@ -29,7 +29,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { RootState, AppDispatch } from "../store/store";
 import { fetchCategories, fetchProductsByCategory } from "../store/productsSlice";
-import { addToCart, updateQuantity, removeFromCart } from "../store/cartSlice";
+import { addToCart, removeFromCart } from "../store/cartSlice";
 import { styles } from "./ShoppingListScreen.styles";
 import {
   SHOPPING_LIST,
