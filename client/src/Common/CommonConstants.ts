@@ -3,9 +3,9 @@ export const REQUIRED_FIELD = "שדה חובה";
 export const INVALID_EMAIL_FORMAT = "פורמט אימייל לא תקין";
 
 // Form field labels
-export const FULL_NAME = " Full Name *";
-export const ADDRESS = "Address *";
-export const EMAIL = "Email *";
+export const FULL_NAME = "* שם מלא";
+export const ADDRESS = "* כתובת";
+export const EMAIL = "* אימייל";
 
 // Cart messages
 export const EMPTY_CART = "העגלה ריקה";

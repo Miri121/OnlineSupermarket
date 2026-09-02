@@ -10,16 +10,60 @@ export const styles = {
   divider: { mb: 3 },
   textField: {
     mb: 2,
+    "& .MuiInputLabel-root": {
+      right: 0,
+      left: "auto",
+      transformOrigin: "top right",
+      paddingRight: "40px",
+    },
+    "& .MuiOutlinedInput-root": {
+      alignItems: "flex-start",
+      "& .MuiOutlinedInput-notchedOutline": {
+        textAlign: "right",
+      },
+      "& .MuiOutlinedInput-notchedOutline legend": {
+        textAlign: "right",
+        marginLeft: "auto",
+        marginRight: 0,
+      },
+    },
     "& .MuiInputBase-input": {
       textAlign: "right",
       direction: "rtl",
     },
+    "& .MuiInputBase-inputMultiline": {
+      textAlign: "right",
+      direction: "rtl",
+      height: "100%",
+    },
+    "& .MuiFormHelperText-root": {
+      textAlign: "right",
+    },
   },
   emailField: {
     mb: 3,
+    "& .MuiInputLabel-root": {
+      right: 0,
+      left: "auto",
+      transformOrigin: "top right",
+      paddingRight: "42px",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& .MuiOutlinedInput-notchedOutline": {
+        textAlign: "right",
+      },
+      "& .MuiOutlinedInput-notchedOutline legend": {
+        textAlign: "right",
+        marginLeft: "auto",
+        marginRight: 0,
+      },
+    },
     "& .MuiInputBase-input": {
       textAlign: "right",
       direction: "rtl",
+    },
+    "& .MuiFormHelperText-root": {
+      textAlign: "right",
     },
   },
   submitButton: {

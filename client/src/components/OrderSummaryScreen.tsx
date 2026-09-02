@@ -360,8 +360,6 @@ function OrderSummaryScreen() {
             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
             error={!!errors.address}
             helperText={errors.address}
-            multiline
-            rows={2}
             sx={styles.textField}
           />
           <TextField
