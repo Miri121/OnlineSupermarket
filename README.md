@@ -119,8 +119,8 @@ The .NET server will run on **http://localhost:5000**
 #### Recommended: Using Docker Compose
 
 ```bash
-# Navigate to node-server/elasticsearch directory
-cd node-server/elasticsearch
+# Navigate to node-server/src/elasticsearch directory
+cd node-server/src/elasticsearch
 
 # Start Elasticsearch and Kibana
 docker-compose up -d
@@ -219,12 +219,12 @@ The Node.js server will run on **http://localhost:3001**
 
 **Index Name**: `orders`
 
-**Mapping File**: `node-server/elasticsearch/elasticsearch-mapping.json`
+**Mapping File**: `node-server/src/elasticsearch/elasticsearch-mapping.json`
 
 The mapping is automatically applied when the Node.js server starts. You can also manually create the index using:
 
 ```bash
-curl -X PUT "localhost:9200/orders" -H "Content-Type: application/json" -d @node-server/elasticsearch/elasticsearch-mapping.json
+curl -X PUT "localhost:9200/orders" -H "Content-Type: application/json" -d @node-server/src/elasticsearch/elasticsearch-mapping.json
 ```
 
 ---
@@ -268,13 +268,11 @@ curl -X PUT "localhost:9200/orders" -H "Content-Type: application/json" -d @node
 │   └── ShoppingCartAPI.csproj
 │
 ├── node-server/                     # Node.js Backend
-│   ├── elasticsearch/
-│   │   ├── docker-compose.yml
-│   │   ├── elasticsearch-mapping.json
-│   │   ├── elasticsearch.ts
-│   │   └── orderMapping.ts
 │   ├── src/
-│   │   ├── config/
+│   │   ├── elasticsearch/
+│   │   │   └── docker-compose.yml
+│   │   │   └── elasticsearch-mapping.json
+│   │   │   └── elasticsearch.ts
 │   │   │   └── orderMapping.ts
 │   │   ├── controllers/
 │   │   │   └── orderController.ts

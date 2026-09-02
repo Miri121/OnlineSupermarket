@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import app from "./app";
-import { initializeElasticsearch } from "../elasticsearch/elasticsearch";
+import { initializeElasticsearch } from "./elasticsearch/elasticsearch";
 import logger from "./utils/logger";
 
 dotenv.config();

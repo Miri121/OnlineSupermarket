@@ -1,4 +1,4 @@
- import { elasticsearchClient, getIndexName } from "../../elasticsearch/elasticsearch";
+import { elasticsearchClient, getIndexName } from "../elasticsearch/elasticsearch";
 import { Order } from "../types/order";
 import { AppError } from "../middleware/errorHandler";
 import logger from "../utils/logger";

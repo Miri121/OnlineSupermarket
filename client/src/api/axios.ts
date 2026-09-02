@@ -1,10 +1,9 @@
 import axios from "axios";
 
-// API base URLs from environment variables
 const DOTNET_API_URL = import.meta.env.VITE_DOTNET_API_URL;
 const NODE_API_URL = import.meta.env.VITE_NODE_API_URL;
 
-// Create axios instance for .NET API (products, categories)
+// Create axios instance 
 const httpClient = axios.create({
   baseURL: DOTNET_API_URL,
   timeout: 10000,
@@ -13,7 +12,7 @@ const httpClient = axios.create({
   },
 });
 
-// Create separate instance for Node.js API (orders)
+// Create separate instance for Node.js API 
 export const nodeHttpClient = axios.create({
   baseURL: NODE_API_URL,
   timeout: 10000,
@@ -25,11 +24,6 @@ export const nodeHttpClient = axios.create({
 // Request interceptor for main API
 httpClient.interceptors.request.use(
   (config) => {
-    // You can add auth tokens here
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
     return config;
   },
   (error) => {

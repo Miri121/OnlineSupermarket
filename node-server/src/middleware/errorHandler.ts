@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import logger from "../utils/logger";
 
-// Custom error class
 export class AppError extends Error {
   statusCode: number;
   isOperational: boolean;
