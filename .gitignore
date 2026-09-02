@@ -17,9 +17,6 @@ obj/
 *.cache
 *.log
 
-# Environment
-.env
-.env.local
 
 # IDE
 .vscode/
