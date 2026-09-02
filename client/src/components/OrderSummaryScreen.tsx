@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import * as yup from "yup";
 import {
   Box,
   Paper,
@@ -23,13 +24,18 @@ import {
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import { nodeHttpClient } from "../api/axios";
+import { httpClient } from "../api/axios";
 import { RootState, AppDispatch } from "../store/store";
 import { clearCart } from "../store/cartSlice";
 import { styles } from "./OrderSummaryScreen.styles";
 import {
   REQUIRED_FIELD,
   INVALID_EMAIL_FORMAT,
+  NAME_MIN_LENGTH,
+  NAME_MAX_LENGTH,
+  NAME_LETTERS_ONLY,
+  ADDRESS_MIN_LENGTH,
+  ADDRESS_MAX_LENGTH,
   FULL_NAME,
   ADDRESS,
   EMAIL,
@@ -51,6 +57,24 @@ import {
   TOTAL,
 } from "../Common/CommonConstants";
 
+// Yup validation schema
+const validationSchema = yup.object().shape({
+  fullName: yup
+    .string()
+    .trim()
+    .required(REQUIRED_FIELD)
+    .min(2, NAME_MIN_LENGTH)
+    .max(50, NAME_MAX_LENGTH)
+    .matches(/^[a-zA-Z\u0590-\u05FF\s]+$/, NAME_LETTERS_ONLY),
+  address: yup
+    .string()
+    .trim()
+    .required(REQUIRED_FIELD)
+    .min(5, ADDRESS_MIN_LENGTH)
+    .max(100, ADDRESS_MAX_LENGTH),
+  email: yup.string().trim().required(REQUIRED_FIELD).email(INVALID_EMAIL_FORMAT),
+});
+
 function OrderSummaryScreen() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -66,31 +90,29 @@ function OrderSummaryScreen() {
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const validateForm = () => {
-    const newErrors: { [key: string]: string } = {};
-
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = REQUIRED_FIELD;
+  const validateForm = async () => {
+    try {
+      await validationSchema.validate(formData, { abortEarly: false });
+      setErrors({});
+      return true;
+    } catch (err) {
+      if (err instanceof yup.ValidationError) {
+        const newErrors: { [key: string]: string } = {};
+        err.inner.forEach((error) => {
+          if (error.path) {
+            newErrors[error.path] = error.message;
+          }
+        });
+        setErrors(newErrors);
+      }
+      return false;
     }
-
-    if (!formData.address.trim()) {
-      newErrors.address = REQUIRED_FIELD;
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = REQUIRED_FIELD;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = INVALID_EMAIL_FORMAT;
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    if (!(await validateForm())) {
       return;
     }
 
@@ -118,7 +140,7 @@ function OrderSummaryScreen() {
         orderDate: new Date().toISOString(),
       };
 
-      await nodeHttpClient.post("/orders", orderData);
+      await httpClient.post("/orders", orderData);
 
       setSuccess(true);
       dispatch(clearCart());

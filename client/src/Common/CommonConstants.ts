@@ -1,6 +1,11 @@
 // Form validation messages
 export const REQUIRED_FIELD = "שדה חובה";
 export const INVALID_EMAIL_FORMAT = "פורמט אימייל לא תקין";
+export const NAME_MIN_LENGTH = "שם חייב להכיל לפחות 2 תווים";
+export const NAME_MAX_LENGTH = "שם יכול להכיל עד 50 תווים";
+export const NAME_LETTERS_ONLY = "שם חייב להכיל אותיות בלבד";
+export const ADDRESS_MIN_LENGTH = "כתובת חייבת להכיל לפחות 5 תווים";
+export const ADDRESS_MAX_LENGTH = "כתובת יכולה להכיל עד 100 תווים";
 
 // Form field labels
 export const FULL_NAME = "* שם מלא";

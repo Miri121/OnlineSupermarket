@@ -3,7 +3,7 @@ import axios from "axios";
 const DOTNET_API_URL = import.meta.env.VITE_DOTNET_API_URL;
 const NODE_API_URL = import.meta.env.VITE_NODE_API_URL;
 
-// Create axios instance 
+// Create axios instance
 const httpClient = axios.create({
   baseURL: DOTNET_API_URL,
   timeout: 10000,
@@ -12,8 +12,8 @@ const httpClient = axios.create({
   },
 });
 
-// Create separate instance for Node.js API 
-export const nodeHttpClient = axios.create({
+// Create separate instance for Node.js API
+export const httpClient = axios.create({
   baseURL: NODE_API_URL,
   timeout: 10000,
   headers: {
@@ -78,7 +78,7 @@ httpClient.interceptors.request.use(
 );
 
 // Response interceptor for Node API
-nodeHttpClient.interceptors.response.use(
+httpClient.interceptors.response.use(
   (response) => {
     return response;
   },
