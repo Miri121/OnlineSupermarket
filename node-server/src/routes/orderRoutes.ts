@@ -5,11 +5,13 @@ import {
   getOrderById,
   searchOrdersByEmail,
 } from "../controllers/orderController";
+import { validateOrderInput } from "../middleware/securityMiddleware";
+import { orderCreationLimiter } from "../middleware/rateLimiter";
 
 const router = Router();
 
-// Create a new order
-router.post("/", createOrder);
+// Create a new order - with strict rate limiting and input validation
+router.post("/", orderCreationLimiter, validateOrderInput, createOrder);
 
 // Get all orders
 router.get("/", getAllOrders);
