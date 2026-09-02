@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import * as yup from "yup";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Box,
   Paper,
@@ -24,18 +25,11 @@ import {
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import { httpClient } from "../api/axios";
+import { nodeHttpClient } from "../api/axios";
 import { RootState, AppDispatch } from "../store/store";
 import { clearCart } from "../store/cartSlice";
-import { styles } from "./OrderSummaryScreen.styles";
+import { styles } from "./OrderSummaryScreen.styles.ts";
 import {
-  REQUIRED_FIELD,
-  INVALID_EMAIL_FORMAT,
-  NAME_MIN_LENGTH,
-  NAME_MAX_LENGTH,
-  NAME_LETTERS_ONLY,
-  ADDRESS_MIN_LENGTH,
-  ADDRESS_MAX_LENGTH,
   FULL_NAME,
   ADDRESS,
   EMAIL,
@@ -56,66 +50,33 @@ import {
   QUANTITY,
   TOTAL,
 } from "../Common/CommonConstants";
-
-// Yup validation schema
-const validationSchema = yup.object().shape({
-  fullName: yup
-    .string()
-    .trim()
-    .required(REQUIRED_FIELD)
-    .min(2, NAME_MIN_LENGTH)
-    .max(50, NAME_MAX_LENGTH)
-    .matches(/^[a-zA-Z\u0590-\u05FF\s]+$/, NAME_LETTERS_ONLY),
-  address: yup
-    .string()
-    .trim()
-    .required(REQUIRED_FIELD)
-    .min(5, ADDRESS_MIN_LENGTH)
-    .max(100, ADDRESS_MAX_LENGTH),
-  email: yup.string().trim().required(REQUIRED_FIELD).email(INVALID_EMAIL_FORMAT),
-});
+import { IFormData } from "../Interfaces";
+import { orderFormValidationSchema } from "../Utils/yupValidations";
 
 function OrderSummaryScreen() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
-  const [formData, setFormData] = useState({
-    fullName: "",
-    address: "",
-    email: "",
-  });
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const validateForm = async () => {
-    try {
-      await validationSchema.validate(formData, { abortEarly: false });
-      setErrors({});
-      return true;
-    } catch (err) {
-      if (err instanceof yup.ValidationError) {
-        const newErrors: { [key: string]: string } = {};
-        err.inner.forEach((error) => {
-          if (error.path) {
-            newErrors[error.path] = error.message;
-          }
-        });
-        setErrors(newErrors);
-      }
-      return false;
-    }
-  };
+  // React Hook Form setup with Yup validation
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormData>({
+    resolver: yupResolver(orderFormValidationSchema),
+    defaultValues: {
+      fullName: "",
+      address: "",
+      email: "",
+    },
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!(await validateForm())) {
-      return;
-    }
-
+  const onSubmit = async (formData: IFormData) => {
     if (cartItems.length === 0) {
       setErrorMessage(EMPTY_CART);
       return;
@@ -140,7 +101,7 @@ function OrderSummaryScreen() {
         orderDate: new Date().toISOString(),
       };
 
-      await httpClient.post("/orders", orderData);
+      await nodeHttpClient.post("/orders", orderData);
 
       setSuccess(true);
       dispatch(clearCart());
@@ -155,7 +116,6 @@ function OrderSummaryScreen() {
       setSubmitting(false);
     }
   };
-
   const getTotalPrice = () => {
     return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
   };
@@ -350,34 +310,49 @@ function OrderSummaryScreen() {
           {CUSTOMER_DETAILS}
         </Typography>
         <Divider sx={styles.divider} />
-        <form onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            label={FULL_NAME}
-            value={formData.fullName}
-            onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-            error={!!errors.fullName}
-            helperText={errors.fullName}
-            sx={styles.textField}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Controller
+            name='fullName'
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label={FULL_NAME}
+                error={!!errors.fullName}
+                helperText={errors.fullName?.message}
+                sx={styles.textField}
+              />
+            )}
           />
-          <TextField
-            fullWidth
-            label={ADDRESS}
-            value={formData.address}
-            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-            error={!!errors.address}
-            helperText={errors.address}
-            sx={styles.textField}
+          <Controller
+            name='address'
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label={ADDRESS}
+                error={!!errors.address}
+                helperText={errors.address?.message}
+                sx={styles.textField}
+              />
+            )}
           />
-          <TextField
-            fullWidth
-            label={EMAIL}
-            type='email'
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            error={!!errors.email}
-            helperText={errors.email}
-            sx={styles.emailField}
+          <Controller
+            name='email'
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label={EMAIL}
+                type='email'
+                error={!!errors.email}
+                helperText={errors.email?.message}
+                sx={styles.emailField}
+              />
+            )}
           />
           <Button
             type='submit'

@@ -30,7 +30,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { RootState, AppDispatch } from "../store/store";
 import { fetchCategories, fetchProductsByCategory } from "../store/productsSlice";
 import { addToCart, removeFromCart } from "../store/cartSlice";
-import { styles } from "./ShoppingListScreen.styles";
+import { styles } from "./ShoppingListScreen.styles.ts";
 import {
   SHOPPING_LIST,
   CATEGORIES,

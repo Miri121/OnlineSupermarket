@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Container, AppBar, Toolbar, Typography, ThemeProvider, createTheme } from "@mui/material";
-import ShoppingListScreen from "./components/ShoppingListScreen";
-import OrderSummaryScreen from "./components/OrderSummaryScreen";
+import ShoppingListScreen from "./Components/ShoppingListScreen";
+import OrderSummaryScreen from "./Components/OrderSummaryScreen";
 
 // Create RTL theme
 const theme = createTheme({
