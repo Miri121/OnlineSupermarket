@@ -43,6 +43,9 @@ import {
   CLOSE,
   CONTINUE_TO_ORDER,
   ITEMS,
+  CONFIRM_DELETE_PRODUCT,
+  YES,
+  NO,
 } from "../Common/CommonConstants";
 
 function ShoppingListScreen() {
@@ -64,6 +67,8 @@ function ShoppingListScreen() {
     endY: number;
   } | null>(null);
   const [animateFlying, setAnimateFlying] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -130,8 +135,22 @@ function ShoppingListScreen() {
   };
 
   const handleRemoveFromCart = (productId: number) => {
-    dispatch(removeFromCart(productId));
-    setInputQuantities((prev) => ({ ...prev, [productId]: 0 }));
+    setProductToDelete(productId);
+    setDeleteConfirmOpen(true);
+  };
+
+  const confirmRemoveFromCart = () => {
+    if (productToDelete !== null) {
+      dispatch(removeFromCart(productToDelete));
+      setInputQuantities((prev) => ({ ...prev, [productToDelete]: 0 }));
+    }
+    setDeleteConfirmOpen(false);
+    setProductToDelete(null);
+  };
+
+  const cancelRemoveFromCart = () => {
+    setDeleteConfirmOpen(false);
+    setProductToDelete(null);
   };
 
   const getTotalItems = () => {
@@ -352,6 +371,61 @@ function ShoppingListScreen() {
             }}
           >
             {CONTINUE_TO_ORDER}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteConfirmOpen}
+        onClose={cancelRemoveFromCart}
+        maxWidth='xs'
+        fullWidth
+        sx={{
+          "& .MuiDialog-paper": {
+            direction: "rtl",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            textAlign: "center",
+            fontWeight: 600,
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
+          {CONFIRM_DELETE_PRODUCT}
+        </DialogTitle>
+        <DialogActions sx={{ justifyContent: "center", pb: 3, gap: 2 }}>
+          <Button
+            onClick={cancelRemoveFromCart}
+            variant='outlined'
+            sx={{
+              borderColor: "#667eea",
+              color: "#667eea",
+              "&:hover": {
+                borderColor: "#5568d3",
+                backgroundColor: "rgba(102, 126, 234, 0.08)",
+              },
+            }}
+          >
+            {NO}
+          </Button>
+          <Button
+            onClick={confirmRemoveFromCart}
+            variant='contained'
+            sx={{
+              backgroundColor: "#667eea",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#5568d3",
+              },
+            }}
+          >
+            {YES}
           </Button>
         </DialogActions>
       </Dialog>

@@ -1,9 +1,9 @@
-# Shopping Cart System
+# Online Supermarket System
 
-A full-stack shopping cart application with three main components:
+A full-stack online supermarket application with three main components:
 
 - **Client**: React + TypeScript + Redux Toolkit + Material-UI
-- **Products Server**: .NET 8 (compatible with .NET 10) + SQL Server + Entity Framework
+- **Products Server**: .NET 10 + SQL Server + Entity Framework
 - **Orders Server**: Node.js + TypeScript + Express + Elasticsearch
 
 ---
@@ -18,7 +18,7 @@ A full-stack shopping cart application with three main components:
 
 ### Component 2: .NET Server (Products & Categories)
 
-- **Technology**: .NET 9 with C# 12 (latest version, compatible with Visual Studio 2022)
+- **Technology**: .NET 10
 - **Database**: SQL Server with Entity Framework Core
 - **Purpose**: Manages categories and products
 - **Endpoints**:
@@ -47,10 +47,8 @@ Before installation, ensure you have the following installed:
 
 1. **Node.js** (v18 or higher) - [Download](https://nodejs.org/)
 2. **.NET 10 SDK** - [Download](https://dotnet.microsoft.com/download/dotnet/10.0)
-   - Alternative: .NET 8 SDK (LTS) - [Download](https://dotnet.microsoft.com/download/dotnet/8.0)
-3. **SQL Server** or **SQL Server LocalDB** - [Download](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+3. **SQL Server** - [Download](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 4. **Elasticsearch** (v8.x) - [Download](https://www.elastic.co/downloads/elasticsearch)
-5. **Visual Studio 2022** (optional, for .NET development) - [Download](https://visualstudio.microsoft.com/)
 
 ---
 
@@ -58,13 +56,19 @@ Before installation, ensure you have the following installed:
 
 ### 1. Clone or Extract the Project
 
-```bash
-cd "c:/Users/user/Desktop/פרוייקט 1"
-```
-
 ---
 
+## Note:
+
+For convenience, a VS Code workspace file, `OnlineSupermarket.code-workspace`, is provided at the root of the project. Opening this file in VS Code will automatically launch all three services (`dotnet-server`, `node-server`, and `client`) in separate terminals.
+
+#### On the first run,
+
+the script will also install any missing dependencies, so it may take a few extra seconds before all services are up and running.
+
 ### 2. Setup Client (React Application)
+
+#or#:
 
 ```bash
 # Navigate to client directory
@@ -98,15 +102,15 @@ dotnet run
 
 #### Option B: Using Visual Studio
 
-1. Open **Visual Studio 2022**
+1. Open **Visual Studio**
 2. Click **File** → **Open** → **Project/Solution**
 3. Navigate to `dotnet-server` folder
-4. Select `ShoppingCartAPI.csproj`
+4. Select `OnlineSupermarket.APIcsproj `
 5. Press **F5** or click **Start** to run the project
 
 The .NET server will run on **http://localhost:5000**
 
-**Note**: The database will be automatically created using SQL Server LocalDB on first run. The connection string is configured in `appsettings.json`.
+**Note**: The database will be automatically created using SQL Server on first run. The connection string is configured in `appsettings.Development.json`.
 
 ---
 
@@ -143,28 +147,6 @@ curl http://localhost:9200/_cluster/health?pretty
 curl http://localhost:9200/_cat/indices?v
 ```
 
-#### Stop Services
-
-```bash
-cd node-server/elasticsearch
-
-# Stop services (keeps data)
-docker-compose stop
-
-# Stop and remove containers (keeps data)
-docker-compose down
-
-# Stop, remove containers and volumes (deletes all data)
-docker-compose down -v
-```
-
-#### Alternative - Manual Installation:
-
-1. Download and extract Elasticsearch
-2. Navigate to the `bin` folder
-3. Run `elasticsearch.bat`
-4. Verify it's running by visiting **http://localhost:9200**
-
 ---
 
 ### 5. Setup Node.js Server (Orders)
@@ -186,41 +168,6 @@ The Node.js server will run on **http://localhost:3001**
 
 ---
 
-## Running the Complete System
-
-To run the entire system, you need to start all three components:
-
-### Terminal 1 - Client:
-
-```bash
-cd client
-npm run dev
-```
-
-### Terminal 2 - .NET Server:
-
-```bash
-cd dotnet-server
-dotnet run
-```
-
-### Terminal 3 - Elasticsearch:
-
-```bash
-# Start Elasticsearch (if not using Docker)
-cd path/to/elasticsearch/bin
-elasticsearch.bat
-```
-
-### Terminal 4 - Node.js Server:
-
-```bash
-cd node-server
-npm run dev
-```
-
----
-
 ## Application URLs
 
 - **Client Application**: http://localhost:3000
@@ -239,18 +186,18 @@ npm run dev
 2. **Select Category**: Click on a category chip to view its products
 3. **Add Products**:
    - Enter quantity for desired products
-   - Click "Add to Cart" button
-4. **View Cart**: Cart summary appears at the bottom showing all selected items
-5. **Continue**: Click "Continue to Order" button to proceed to checkout
+   - Click "הוסף מוצר לסל" button
+4. **Show Cart**: Clicking on the cart icon (top left) will display all selected items.
+5. **Continue**: Click on the "המשך להזמנה" button to proceed to checkout.
 
 ### Screen 2 - Order Summary
 
 1. **Review Order**: View all selected products in a table format
 2. **Fill Customer Information**:
    - Full Name (required)
-   - Full Address (required)
+   - Address (required)
    - Email (required)
-3. **Submit Order**: Click "Confirm Order" button
+3. **Submit Order**: Click "אישור הזמנה" button
 4. **Confirmation**: Success message appears and redirects to shopping page
 
 ---
@@ -259,29 +206,25 @@ npm run dev
 
 ### SQL Server (Products Database)
 
-**Connection String** (in `appsettings.json`):
-
-```json
-"DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ShoppingCartDB;Trusted_Connection=True;MultipleActiveResultSets=true"
 ```
-
 **Tables**:
 
 - `Categories` - Product categories
 - `Products` - Products with category relationships
 
 **Seed Data**: The database is automatically seeded with sample categories and products on first run.
+```
 
 ### Elasticsearch (Orders Database)
 
 **Index Name**: `orders`
 
-**Mapping File**: `node-server/elasticsearch-mapping.json`
+**Mapping File**: `node-server/elasticsearch/elasticsearch-mapping.json`
 
 The mapping is automatically applied when the Node.js server starts. You can also manually create the index using:
 
 ```bash
-curl -X PUT "localhost:9200/orders" -H "Content-Type: application/json" -d @node-server/elasticsearch-mapping.json
+curl -X PUT "localhost:9200/orders" -H "Content-Type: application/json" -d @node-server/elasticsearch/elasticsearch-mapping.json
 ```
 
 ---
@@ -292,7 +235,7 @@ curl -X PUT "localhost:9200/orders" -H "Content-Type: application/json" -d @node
 פרוייקט 1/
 ├── client/                          # React Frontend
 │   ├── src/
-│   │   ├── screens/                 # Screen components
+│   │   ├── components/                 # Screen components
 │   │   │   ├── ShoppingListScreen.tsx
 │   │   │   └── OrderSummaryScreen.tsx
 │   │   ├── store/                   # Redux store
@@ -309,26 +252,47 @@ curl -X PUT "localhost:9200/orders" -H "Content-Type: application/json" -d @node
 │   │   ├── CategoriesController.cs
 │   │   └── ProductsController.cs
 │   ├── Data/
-│   │   ├── ShoppingCartContext.cs
+│   │   ├── AppDbContext.cs
 │   │   └── DbInitializer.cs
+│   ├── DTOs/
+│   │   ├── CategoryDto.cs
+│   │   └── ProductDto.cs
 │   ├── Models/
 │   │   ├── Category.cs
 │   │   └── Product.cs
+│   ├── Services/
+│   │   ├── CategoryService.cs
+│   │   └── ProductService.cs
 │   ├── Program.cs
 │   ├── appsettings.json
 │   └── ShoppingCartAPI.csproj
 │
 ├── node-server/                     # Node.js Backend
+│   ├── elasticsearch/
+│   │   ├── docker-compose.yml
+│   │   ├── elasticsearch-mapping.json
+│   │   ├── elasticsearch.ts
+│   │   └── orderMapping.ts
 │   ├── src/
 │   │   ├── config/
-│   │   │   ├── elasticsearch.ts
 │   │   │   └── orderMapping.ts
+│   │   ├── controllers/
+│   │   │   └── orderController.ts
+│   │   ├── middleware/
+│   │   │   ├── asyncHandler.ts
+│   │   │   ├── errorHandler.ts
+│   │   │   └── requestLogger.ts
 │   │   ├── routes/
 │   │   │   └── orderRoutes.ts
+│   │   ├── services/
+│   │   │   └── orderService.ts
 │   │   ├── types/
 │   │   │   └── order.ts
+│   │   ├── utils/
+│   │   │   └── logger.ts
+│   │   ├── app.ts
 │   │   └── server.ts
-│   ├── elasticsearch-mapping.json
+│   ├── .env.example
 │   ├── package.json
 │   └── tsconfig.json
 │
@@ -336,165 +300,3 @@ curl -X PUT "localhost:9200/orders" -H "Content-Type: application/json" -d @node
 ```
 
 ---
-
-## API Documentation
-
-### .NET Server API
-
-#### Get All Categories
-
-```http
-GET http://localhost:5000/api/categories
-```
-
-#### Get Products by Category
-
-```http
-GET http://localhost:5000/api/products/category/{categoryId}
-```
-
-### Node.js Server API
-
-#### Create Order
-
-```http
-POST http://localhost:3001/api/orders
-Content-Type: application/json
-
-{
-  "fullName": "John Doe",
-  "address": "123 Main St, City, Country",
-  "email": "john@example.com",
-  "products": [
-    {
-      "productId": 1,
-      "productName": "Laptop",
-      "quantity": 1,
-      "price": 999.99,
-      "categoryName": "Electronics"
-    }
-  ],
-  "totalAmount": 999.99,
-  "orderDate": "2024-01-01T00:00:00Z"
-}
-```
-
-#### Get All Orders
-
-```http
-GET http://localhost:3001/api/orders
-```
-
----
-
-## Troubleshooting
-
-### Client Issues
-
-**Problem**: Dependencies not installing
-
-```bash
-# Clear npm cache and reinstall
-cd client
-rm -rf node_modules package-lock.json
-npm install
-```
-
-### .NET Server Issues
-
-**Problem**: Database connection error
-
-- Ensure SQL Server LocalDB is installed
-- Check connection string in `appsettings.json`
-- Try running: `sqllocaldb start mssqllocaldb`
-
-**Problem**: Port 5000 already in use
-
-- Change port in `Properties/launchSettings.json`
-- Update client API URL in `client/src/store/productsSlice.ts`
-
-### Node.js Server Issues
-
-**Problem**: Cannot connect to Elasticsearch
-
-- Ensure Elasticsearch is running on port 9200
-- Check `.env` file configuration
-- Verify Elasticsearch health: `curl http://localhost:9200/_cluster/health`
-
-**Problem**: Port 3001 already in use
-
-- Change port in `.env` file
-- Update client API URL in `client/src/screens/OrderSummaryScreen.tsx`
-
----
-
-## Building for Production
-
-### Client
-
-```bash
-cd client
-npm run build
-# Output will be in client/dist folder
-```
-
-### .NET Server
-
-```bash
-cd dotnet-server
-dotnet publish -c Release -o ./publish
-```
-
-### Node.js Server
-
-```bash
-cd node-server
-npm run build
-npm start
-```
-
----
-
-## Technologies Used
-
-### Frontend
-
-- React 18
-- TypeScript
-- Redux Toolkit
-- Material-UI (MUI)
-- Vite
-- Axios
-- React Router
-
-### Backend (.NET)
-
-- .NET 8
-- Entity Framework Core
-- SQL Server
-- Swagger/OpenAPI
-
-### Backend (Node.js)
-
-- Node.js
-- TypeScript
-- Express
-- Elasticsearch
-- CORS
-
----
-
-## License
-
-This project is created for educational purposes.
-
----
-
-## Support
-
-For issues or questions:
-
-1. Check the troubleshooting section
-2. Verify all prerequisites are installed
-3. Ensure all services are running on correct ports
-4. Check console logs for error messages

@@ -226,7 +226,17 @@ function OrderSummaryScreen() {
 
   return (
     <Box>
-      <Typography variant='h4' gutterBottom>
+      <Typography
+        variant='h4'
+        gutterBottom
+        sx={{
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          fontWeight: 600,
+        }}
+      >
         {ORDER_SUMMARY}
       </Typography>
 
@@ -247,28 +257,50 @@ function OrderSummaryScreen() {
 
       {/* Order Items */}
       <Paper elevation={2} sx={styles.orderItemsPaper}>
-        <Typography variant='h5' gutterBottom>
+        <Typography
+          variant='h5'
+          gutterBottom
+          sx={{
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            fontWeight: 600,
+          }}
+        >
           {ORDER_ITEMS}
         </Typography>
         <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{PRODUCT}</TableCell>
-                <TableCell>{CATEGORY}</TableCell>
-                <TableCell align='right'>{PRICE}</TableCell>
-                <TableCell align='right'>{QUANTITY}</TableCell>
-                <TableCell align='right'>{TOTAL}</TableCell>
+                <TableCell sx={{ fontSize: "1.1rem", fontWeight: 600 }}>{PRODUCT}</TableCell>
+                <TableCell sx={{ fontSize: "1.1rem", fontWeight: 600 }}>{CATEGORY}</TableCell>
+                <TableCell align='right' sx={{ fontSize: "1.1rem", fontWeight: 600 }}>
+                  {PRICE}
+                </TableCell>
+                <TableCell align='right' sx={{ fontSize: "1.1rem", fontWeight: 600 }}>
+                  {QUANTITY}
+                </TableCell>
+                <TableCell align='right' sx={{ fontSize: "1.1rem", fontWeight: 600 }}>
+                  {TOTAL}
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {cartItems.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.categoryName}</TableCell>
-                  <TableCell align='right'>₪{item.price.toFixed(2)}</TableCell>
-                  <TableCell align='right'>{item.quantity}</TableCell>
-                  <TableCell align='right'>₪{(item.price * item.quantity).toFixed(2)}</TableCell>
+                  <TableCell sx={{ fontSize: "1rem" }}>{item.name}</TableCell>
+                  <TableCell sx={{ fontSize: "1rem" }}>{item.categoryName}</TableCell>
+                  <TableCell align='right' sx={{ fontSize: "1rem" }}>
+                    ₪{item.price.toFixed(2)}
+                  </TableCell>
+                  <TableCell align='right' sx={{ fontSize: "1rem" }}>
+                    {item.quantity}
+                  </TableCell>
+                  <TableCell align='right' sx={{ fontSize: "1rem" }}>
+                    ₪{(item.price * item.quantity).toFixed(2)}
+                  </TableCell>
                 </TableRow>
               ))}
               <TableRow>
@@ -276,7 +308,18 @@ function OrderSummaryScreen() {
                   <Typography variant='h6'>{TOTAL}:</Typography>
                 </TableCell>
                 <TableCell align='right'>
-                  <Typography variant='h6'>₪{getTotalPrice()}</Typography>
+                  <Typography
+                    variant='h6'
+                    sx={{
+                      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                      fontWeight: 600,
+                    }}
+                  >
+                    ₪{getTotalPrice()}
+                  </Typography>
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -286,7 +329,17 @@ function OrderSummaryScreen() {
 
       {/* Customer Information Form */}
       <Paper elevation={2} sx={styles.customerInfoPaper}>
-        <Typography variant='h5' gutterBottom>
+        <Typography
+          variant='h5'
+          gutterBottom
+          sx={{
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            fontWeight: 600,
+          }}
+        >
           {CUSTOMER_DETAILS}
         </Typography>
         <Divider sx={styles.divider} />

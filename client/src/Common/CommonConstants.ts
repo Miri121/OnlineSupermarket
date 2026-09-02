@@ -41,3 +41,6 @@ export const SHOPPING_CART = "עגלת קניות";
 
 // Actions
 export const CLOSE = "סגור";
+export const CONFIRM_DELETE_PRODUCT = "בטוח למחוק את המוצר?";
+export const YES = "כן";
+export const NO = "לא";

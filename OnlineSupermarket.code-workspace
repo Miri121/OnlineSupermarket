@@ -10,15 +10,27 @@
         "splitTerminals": [
           {
             "name": "dotnet-server",
-            "commands": ["powershell.exe -NoExit -Command \"cd dotnet-server; dotnet run\""],
+            "commands": [
+              "powershell.exe -NoExit -Command \"cd dotnet-server; if (!(Test-Path 'obj\\project.assets.json')) { dotnet restore }; dotnet run\""
+            ],
           },
           {
             "name": "node-server",
-            "commands": ["cd node-server", "timeout /t 5", "npm run dev"],
+            "commands": [
+              "cd node-server",
+              "timeout /t 5",
+              "if not exist node_modules (npm install)",
+              "npm run dev"
+            ],
           },
           {
             "name": "client",
-            "commands": ["cd client", "timeout /t 5", "npm run dev"],
+            "commands": [
+              "cd client",
+              "timeout /t 5",
+              "if not exist node_modules (npm install)",
+              "npm run dev"
+            ],
           },
         ],
       },
