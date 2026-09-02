@@ -232,7 +232,7 @@ curl -X PUT "localhost:9200/orders" -H "Content-Type: application/json" -d @node
 ## Project Structure
 
 ```
-פרוייקט 1/
+ OnlineSupermarket/
 ├── client/                          # React Frontend
 │   ├── src/
 │   │   ├── components/                 # Screen components
