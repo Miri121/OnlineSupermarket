@@ -235,16 +235,50 @@ curl -X PUT "localhost:9200/orders" -H "Content-Type: application/json" -d @node
  OnlineSupermarket/
 ├── client/                          # React Frontend
 │   ├── src/
-│   │   ├── components/                 # Screen components
+│   │   ├── api/                     # API configuration
+│   │   │   └── axios.ts
+│   │   ├── Common/                  # Common constants
+│   │   │   └── CommonConstants.ts
+│   │   ├── Components/              # Main screen components
+│   │   │   ├── OrderSummaryScreen.tsx
+│   │   │   ├── OrderSummaryScreen.styles.ts
 │   │   │   ├── ShoppingListScreen.tsx
-│   │   │   └── OrderSummaryScreen.tsx
+│   │   │   └── ShoppingListScreen.styles.ts
+│   │   ├── Interfaces/              # TypeScript interfaces
+│   │   │   ├── index.ts
+│   │   │   ├── ICartItem.ts
+│   │   │   ├── ICartState.ts
+│   │   │   ├── ICategory.ts
+│   │   │   ├── IFormData.ts
+│   │   │   ├── IProduct.ts
+│   │   │   └── IProductsState.ts
+│   │   ├── Pages/                   # Page-specific components
+│   │   │   ├── OrderSummary/
+│   │   │   │   ├── CustomerDetailsForm.tsx
+│   │   │   │   ├── EmptyCartView.tsx
+│   │   │   │   ├── OrderItemsTable.tsx
+│   │   │   │   └── OrderSuccessView.tsx
+│   │   │   └── ShoppingList/
+│   │   │       ├── CartModal.tsx
+│   │   │       ├── CategoriesSection.tsx
+│   │   │       ├── DeleteConfirmDialog.tsx
+│   │   │       ├── FloatingCartButton.tsx
+│   │   │       ├── FlyingAnimation.tsx
+│   │   │       └── ProductsSection.tsx
 │   │   ├── store/                   # Redux store
 │   │   │   ├── store.ts
 │   │   │   ├── cartSlice.ts
 │   │   │   └── productsSlice.ts
+│   │   ├── Utils/                   # Utility functions
+│   │   │   └── yupValidations.ts
 │   │   ├── App.tsx
-│   │   └── main.tsx
+│   │   ├── main.tsx
+│   │   └── vite-env.d.ts
+│   ├── .env
+│   ├── index.html
 │   ├── package.json
+│   ├── tsconfig.json
+│   ├── tsconfig.node.json
 │   └── vite.config.ts
 │
 ├── dotnet-server/                   # .NET Backend
@@ -260,26 +294,31 @@ curl -X PUT "localhost:9200/orders" -H "Content-Type: application/json" -d @node
 │   ├── Models/
 │   │   ├── Category.cs
 │   │   └── Product.cs
+│   ├── Properties/
+│   │   └── launchSettings.json
 │   ├── Services/
 │   │   ├── CategoryService.cs
 │   │   └── ProductService.cs
-│   ├── Program.cs
 │   ├── appsettings.json
-│   └── ShoppingCartAPI.csproj
+│   ├── appsettings.Development.json
+│   ├── OnlineSupermarket.API.csproj
+│   └── Program.cs
 │
 ├── node-server/                     # Node.js Backend
 │   ├── src/
 │   │   ├── elasticsearch/
-│   │   │   └── docker-compose.yml
-│   │   │   └── elasticsearch-mapping.json
-│   │   │   └── elasticsearch.ts
+│   │   │   ├── docker-compose.yml
+│   │   │   ├── elasticsearch-mapping.json
+│   │   │   ├── elasticsearch.ts
 │   │   │   └── orderMapping.ts
 │   │   ├── controllers/
 │   │   │   └── orderController.ts
 │   │   ├── middleware/
 │   │   │   ├── asyncHandler.ts
 │   │   │   ├── errorHandler.ts
-│   │   │   └── requestLogger.ts
+│   │   │   ├── rateLimiter.ts
+│   │   │   ├── requestLogger.ts
+│   │   │   └── securityMiddleware.ts
 │   │   ├── routes/
 │   │   │   └── orderRoutes.ts
 │   │   ├── services/
@@ -290,11 +329,14 @@ curl -X PUT "localhost:9200/orders" -H "Content-Type: application/json" -d @node
 │   │   │   └── logger.ts
 │   │   ├── app.ts
 │   │   └── server.ts
-│   ├── .env.example
+│   ├── .env
 │   ├── package.json
 │   └── tsconfig.json
 │
-└── README.md                        # This file
+├── .gitignore
+├── OnlineSupermarket.code-workspace
+├── README.md                        # This file
+└── מטלת בית רמה ג.docx.pdf
 ```
 
 ---
