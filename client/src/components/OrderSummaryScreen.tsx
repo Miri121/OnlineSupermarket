@@ -23,7 +23,6 @@ import {
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import StarIcon from "@mui/icons-material/Star";
 import { nodeHttpClient } from "../api/axios";
 import { RootState, AppDispatch } from "../store/store";
 import { clearCart } from "../store/cartSlice";
@@ -169,19 +168,6 @@ function OrderSummaryScreen() {
       <Box sx={styles.luxurySuccessContainer}>
         <Fade in={true} timeout={800}>
           <Paper elevation={0} sx={styles.luxurySuccessPaper}>
-            {/* Decorative Stars */}
-            <Box sx={styles.starsContainer}>
-              <Zoom in={true} timeout={600} style={{ transitionDelay: "200ms" }}>
-                <StarIcon sx={styles.star1} />
-              </Zoom>
-              <Zoom in={true} timeout={600} style={{ transitionDelay: "300ms" }}>
-                <StarIcon sx={styles.star2} />
-              </Zoom>
-              <Zoom in={true} timeout={600} style={{ transitionDelay: "400ms" }}>
-                <StarIcon sx={styles.star3} />
-              </Zoom>
-            </Box>
-
             {/* Success Icon with Animation */}
             <Zoom in={true} timeout={1000}>
               <Box sx={styles.iconWrapper}>
@@ -195,7 +181,6 @@ function OrderSummaryScreen() {
                 <Typography variant='h3' sx={styles.luxuryTitle}>
                   {ORDER_SENT_SUCCESSFULLY}
                 </Typography>
-                <Box sx={styles.decorativeLine} />
               </Box>
             </Slide>
 

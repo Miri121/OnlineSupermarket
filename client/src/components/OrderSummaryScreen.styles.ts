@@ -108,8 +108,8 @@ export const styles = {
     width: "90%",
     textAlign: "center",
     position: "relative",
-    boxShadow: "0 30px 90px rgba(0, 0, 0, 0.3), 0 0 80px rgba(255, 215, 0, 0.2)",
-    border: "2px solid rgba(255, 215, 0, 0.3)",
+    boxShadow: "0 30px 90px rgba(0, 0, 0, 0.3), 0 0 80px rgba(102, 126, 234, 0.2)",
+    border: "2px solid rgba(102, 126, 234, 0.3)",
     overflow: "visible",
   },
 
@@ -226,9 +226,10 @@ export const styles = {
     alignItems: "center",
     gap: 1.5,
     padding: "16px 32px",
-    background: "linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.05) 100%)",
+    background:
+      "linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.05) 100%)",
     borderRadius: 8,
-    border: "1px solid rgba(255, 215, 0, 0.3)",
+    border: "1px solid rgba(102, 126, 234, 0.3)",
     marginTop: 2,
   },
 
@@ -254,7 +255,7 @@ export const styles = {
     left: 0,
     right: 0,
     height: 6,
-    background: "linear-gradient(90deg, #667eea, #FFD700, #764ba2, #FFD700, #667eea)",
+    background: "linear-gradient(90deg, #667eea, #764ba2, #667eea)",
     backgroundSize: "200% 100%",
     animation: "gradientShift 3s linear infinite",
     "@keyframes gradientShift": {
