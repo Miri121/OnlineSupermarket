@@ -45,10 +45,11 @@ A full-stack online supermarket application with three main components:
 
 Before installation, ensure you have the following installed:
 
-1. **Node.js** (v18 or higher) - [Download](https://nodejs.org/)
+1. **Node.js** (v22 or higher) - [Download](https://nodejs.org/)
 2. **.NET 10 SDK** - [Download](https://dotnet.microsoft.com/download/dotnet/10.0)
 3. **SQL Server** - [Download](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 4. **Elasticsearch** (v8.x) - [Download](https://www.elastic.co/downloads/elasticsearch)
+5. **Docker** - [Download](https://www.docker.com/products/docker-desktop)
 
 ---
 
